@@ -6,6 +6,7 @@ import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,7 +77,7 @@ const Navbar = () => {
             paddingLeft: 10,
           }}
         >
-          <img
+          <Image
             src={user.photoURL}
             alt=""
             style={{
@@ -109,7 +110,7 @@ const Navbar = () => {
         <Community>
           <Logo>
             <CommunityLogo>
-              <img
+              <Image
                 src={
                   "https://d2y5h3osumboay.cloudfront.net/gta5qu5wlijhxdm47utf15tapvih"
                 }
@@ -187,7 +188,7 @@ const Navbar = () => {
                     borderRadius: "50%",
                   }}
                 >
-                  <img
+                  <Image
                     src={user.photoURL}
                     alt=""
                     style={{
