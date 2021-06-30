@@ -159,7 +159,7 @@ const ChatScreen = ({ chat, messages }) => {
       </Popover>
       <Header>
         {recipient ? (
-          <Avatar src={user.photoURL} />
+          <Avatar src={recipientSnapshot?.docs?.[0]?.data().photoURL} />
         ) : (
           <Avatar>{recipientEmail[0].toUpperCase()}</Avatar>
         )}
