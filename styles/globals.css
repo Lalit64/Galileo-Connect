@@ -30,3 +30,27 @@ a {
 .Body {
   background: #f7f9fb;
 }
+
+.sidebarContainer {
+  flex: 0.45;
+  border-right: 1px solid #e7e8e8;
+  height: calc(100vh - 144px);
+  min-width: 350px;
+  max-width: 350px;
+  overflow-y: scroll;
+  padding: 8px;
+  background: white;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  position: absolute;
+  top: 144px;
+}
+
+.sidebarContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebarContainerHidden {
+  position: absolute;
+  left: -350px;
+}

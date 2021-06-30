@@ -77,19 +77,16 @@ const Navbar = () => {
             paddingLeft: 10,
           }}
         >
-          <Image
-            src={user.photoURL}
-            alt=""
+          <div
             style={{
               objectFit: "cover",
-              position: "relative",
-              width: 32,
-              height: 32,
-              borderRadius: "100%",
-              border: "1px solid whitesmoke",
               cursor: "pointer",
+              position: "relative",
             }}
-          />
+          >
+            <UserAvatar src={user.photoURL} alt="" width={32} height={32} />
+          </div>
+
           <p style={{ marginLeft: 10 }}>{user.displayName}</p>
         </div>
         <div style={{ width: 250, height: 165 }}>
@@ -114,6 +111,8 @@ const Navbar = () => {
                 src={
                   "https://d2y5h3osumboay.cloudfront.net/gta5qu5wlijhxdm47utf15tapvih"
                 }
+                height={30}
+                width={120}
                 style={{
                   maxHeight: 30,
                   maxWidth: "100%",
@@ -188,19 +187,21 @@ const Navbar = () => {
                     borderRadius: "50%",
                   }}
                 >
-                  <Image
-                    src={user.photoURL}
-                    alt=""
+                  <div
                     style={{
                       objectFit: "cover",
                       position: "relative",
-                      width: 32,
-                      height: 32,
                       borderRadius: "100%",
-                      border: "1px solid whitesmoke",
                       cursor: "pointer",
                     }}
-                  />
+                  >
+                    <UserAvatar
+                      src={user.photoURL}
+                      alt=""
+                      width={32}
+                      height={32}
+                    />
+                  </div>
                 </div>
               </div>
             </UserMenu>
@@ -349,3 +350,7 @@ const SignOutButton = styled(PopoverButton)`
 `;
 
 export { Icon };
+
+const UserAvatar = styled(Image)`
+  border-radius: 100%;
+`;

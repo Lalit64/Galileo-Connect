@@ -2,7 +2,16 @@ import styled from "styled-components";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { useRouter } from "next/router";
-import { Avatar, Button } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  Popover,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import { Icon } from "./Navbar";
 import { useCollection } from "react-firebase-hooks/firestore";
 import "../styles/config";
@@ -17,6 +26,8 @@ const ChatScreen = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const [pickerOpen, togglePicker] = useReducer((state) => !state, false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
   const endOfMessageRef = useRef(null);
   const [messagesSnapshot] = useCollection(
@@ -53,6 +64,14 @@ const ChatScreen = ({ chat, messages }) => {
     }
   };
 
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   const onEmojiClick = (emoji) => {
     setInput(input + "‌" + emoji.native);
   };
@@ -83,8 +102,61 @@ const ChatScreen = ({ chat, messages }) => {
     ScrollToBottom();
   };
 
+  const openHeaderPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeHeaderPopover = () => {
+    setAnchorEl(null);
+  };
+
+  const popoverOpen = Boolean(anchorEl);
+  const popoverId = open ? "simple-popover" : undefined;
+
   return (
     <Container>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Close Chat?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to close chat with{" "}
+            {recipient ? recipient.name : recipientEmail}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="gray">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => router.push(`/`)}
+            style={{ color: "red" }}
+            autoFocus
+          >
+            Close Chat
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Popover
+        id={popoverId}
+        open={popoverOpen}
+        anchorEl={anchorEl}
+        onClose={closeHeaderPopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Button onClick={handleDialogOpen}>Close Chat</Button>
+      </Popover>
       <Header>
         {recipient ? (
           <Avatar src={user.photoURL} />
@@ -118,7 +190,7 @@ const ChatScreen = ({ chat, messages }) => {
           >
             <Icon
               className="fas fa-paperclip"
-              style={{ color: "#2f1695", fontSize: "1rem" }}
+              style={{ color: "#2f1695", fontSize: "1rem", fontWeight: "bold" }}
             />
           </Button>
           <Button
@@ -130,10 +202,11 @@ const ChatScreen = ({ chat, messages }) => {
               marginLeft: 10,
               marginRight: 20,
             }}
+            onClick={openHeaderPopover}
           >
             <Icon
               className="fas fa-ellipsis-v"
-              style={{ color: "#2f1695", fontSize: "1rem" }}
+              style={{ color: "#2f1695", fontSize: "1rem", fontWeight: "bold" }}
             />
           </Button>
         </HeaderIcons>
@@ -149,7 +222,7 @@ const ChatScreen = ({ chat, messages }) => {
           {pickerOpen && (
             <Suspense fallback={<p id="loading">Loading...</p>}>
               <Picker
-                color="#128c7e"
+                color="#311895"
                 emoji="grinning"
                 title="Chose an Emoji"
                 onSelect={onEmojiClick}
@@ -161,7 +234,7 @@ const ChatScreen = ({ chat, messages }) => {
         <InputContainer>
           <Icon
             className="far fa-grin"
-            style={{ cursor: "pointer", color: "gray" }}
+            style={{ cursor: "pointer", color: "#2f1695" }}
             onClick={togglePicker}
           />
           <Input value={input} onChange={(e) => setInput(e.target.value)} />
@@ -171,8 +244,8 @@ const ChatScreen = ({ chat, messages }) => {
               border: "none",
               marginRight: 15,
               padding: 10,
-              paddingLeft: 20,
-              paddingRight: 20,
+              paddingLeft: 30,
+              paddingRight: 30,
               borderTopRightRadius: 4,
               borderBottomRightRadius: 4,
             }}
@@ -182,7 +255,7 @@ const ChatScreen = ({ chat, messages }) => {
           >
             <Icon
               className="fad fa-sign-out-alt"
-              style={{ color: "#ededed", fontSize: "1.3rem" }}
+              style={{ color: "#ededed", fontSize: "1.2rem" }}
             />
           </button>
         </InputContainer>
