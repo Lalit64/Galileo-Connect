@@ -58,5 +58,3 @@ const CoverContainer = styled.div`
   top: 64px;
   background: white;
 `;
-
-//https://youtu.be/svlEVg0To_c?t=7078
