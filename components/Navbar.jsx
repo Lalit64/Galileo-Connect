@@ -89,8 +89,22 @@ const Navbar = () => {
 
           <p style={{ marginLeft: 10 }}>{user.displayName}</p>
         </div>
-        <div style={{ width: 250, height: 165 }}>
-          <PopoverButton>My Profile</PopoverButton>
+        <div
+          style={{
+            width: 250,
+            height: 165,
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column",
+          }}
+        >
+          <PopoverButton
+            onClick={() => {
+              router.push(`/profile`);
+            }}
+          >
+            My Profile
+          </PopoverButton>
           <PopoverButton>Edit Profile</PopoverButton>
           <PopoverButton>Notifications</PopoverButton>
           <SignOutButton
@@ -337,16 +351,19 @@ const UserMenu = styled.div`
 `;
 
 const PopoverButton = styled(Button)`
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 4.5px;
-  font-weight: 400;
-  text-transform: none;
-  border-radius: 0;
+  &&& {
+    justify-content: space-between;
+    border-radius: 0;
+    font-weight: 400;
+    text-transform: none;
+    width: 100%;
+  }
 `;
 
 const SignOutButton = styled(PopoverButton)`
-  border-top: 1px solid #ededed;
+  &&& {
+    border-top: 2px solid #ededed;
+  }
 `;
 
 export { Icon };

@@ -4,41 +4,35 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Chat from "./Chat";
 import { Icon } from "./Navbar";
+import { useState } from "react";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
 
+  const [clicked, setClicked] = useState(true);
+
+  const onClick = () => {
+    setClicked(!clicked);
+  };
+
   /* prettier-ignore */
   const userChatRef = db.collection("chats").where("users", "array-contains", user.email);
   const [chatsSnapshot] = useCollection(userChatRef);
-
-  let state = {
-    clicked: false,
-  };
-
-  const onClick = () => {
-    state = {
-      clicked: !state.clicked,
-    };
-    console.log(!1);
-  };
 
   return (
     <div>
       <CoverContainer>
         <Icon onClick={onClick} className={"fa-solid fa-bars "} />
       </CoverContainer>
-      <Container
-        className={"sidebarContainer"}
-        style={{
-          display: state.clicked ? "none" : "flex",
-          flexDirection: "column",
-        }}
-      >
-        {chatsSnapshot?.docs.map((chat) => (
-          <Chat key={chat.id} id={chat.id} users={chat.data().users} />
-        ))}
-      </Container>
+      <div>
+        {clicked && (
+          <Container className={"sidebarContainer"}>
+            {chatsSnapshot?.docs.map((chat) => (
+              <Chat key={chat.id} id={chat.id} users={chat.data().users} />
+            ))}
+          </Container>
+        )}
+      </div>
     </div>
   );
 };
